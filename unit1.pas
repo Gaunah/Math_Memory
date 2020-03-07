@@ -23,10 +23,6 @@ type
     Panel2: TPanel;
     procedure Button1Click(Sender: TObject);
 
-
-
-
-
   private
 
   public
@@ -47,8 +43,6 @@ procedure TForm1.Button1Click(Sender: TObject);
 begin
   Form4.show;
 end;
-
-
 
 end.
 
