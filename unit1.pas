@@ -5,8 +5,8 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Grids, ExtCtrls,
-  StdCtrls, Types;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  StdCtrls;
 
 type
 
@@ -21,7 +21,7 @@ type
     Label3: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
-    procedure Button1Click(Sender: TObject);
+    procedure spielBeginnClicked(Sender: TObject);
 
   private
 
@@ -39,7 +39,7 @@ implementation
 { TForm1 }
 
  uses Unit4;
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.spielBeginnClicked(Sender: TObject);
 begin
   Form4.show;
 end;

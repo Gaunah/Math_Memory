@@ -19,7 +19,9 @@ type
     Label1: TLabel;
     Label2: TLabel;
     StringGrid1: TStringGrid;
-    procedure Button1Click(Sender: TObject);
+    procedure cardSelected(Sender: TObject; aCol, aRow: Integer;
+      var CanSelect: Boolean);
+    procedure level1Clicked(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
@@ -38,8 +40,8 @@ var
 implementation
 
 {$R *.lfm}
- VAR n:ARRAY [0..9,0..2] of integer;
-   al:ARRAY [0..30] of integer;
+ VAR
+   cardResults:ARRAY [0..29] of integer;
 { TForm4 }
 
 
@@ -48,22 +50,60 @@ begin
 
 end;
 
-procedure TForm4.Button1Click(Sender: TObject);
+procedure TForm4.level1Clicked(Sender: TObject);
+begin
+       WriteLn('lvl 1 clicked!');
+end;
+
+procedure TForm4.cardSelected(Sender: TObject; aCol, aRow: Integer;
+  var CanSelect: Boolean);
+begin
+       WriteLn('col: ', aCol, ' row: ', aRow);
+end;
+
+procedure swap(var a,b : integer);
+var
+   tmp : integer;
+begin
+    tmp := a;
+    a := b;
+    b := tmp;
+end;
+
+procedure aufgabenErstellen(ergebnisse: Array of Integer);
 begin
 
 end;
 
 procedure TForm4.FormCreate(Sender: TObject);
+var i, result, arraySize:Integer;
 begin
-  randomize;
+       Randomize;
+       // lege 15 Ergebnisse fest
+       i := 0;
+       arraysize := Length(cardResults);
+       while i <= arraySize-2 do
+       begin
+            result := random(100); // kann zu duplikaten führen :(
+            WriteLn('idx: ', i, ' = ', result);
+            cardResults[i] := result;
+            cardResults[i+1] := result;
+            i := i+2;
+       end;
+
+       // mische liste
+       for i:=0 to arraySize-1 do
+       begin
+            swap(cardResults[i], cardResults[random(arraySize-1)]);
+       end;
+
+       // erstelle Aufgabe anhand des vordefinierten Ergebnis
+
 end;
 
 procedure TForm4.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
-
-
 begin
-
 
 end;
 
@@ -73,10 +113,7 @@ Var Col,Row:integer;
 begin
       Stringgrid1.MouseToCell(x,y,col,row);
       Edit2.Text:=InttoStr(Col);
-       Edit3.Text:=InttoStr(row);
-
-
-
+      Edit3.Text:=InttoStr(row);
 end;
 
 end.

@@ -1,12 +1,12 @@
 object Form1: TForm1
-  Left = 370
-  Height = 396
+  Left = 414
+  Height = 419
   Top = 201
-  Width = 609
-  Caption = 'Form1'
-  ClientHeight = 396
-  ClientWidth = 609
-  LCLVersion = '2.0.4.0'
+  Width = 619
+  Caption = 'MATH-MEMORY'
+  ClientHeight = 419
+  ClientWidth = 619
+  LCLVersion = '2.0.6.0'
   object Panel1: TPanel
     Left = 8
     Height = 400
@@ -27,7 +27,7 @@ object Form1: TForm1
     TabOrder = 0
     object Edit1: TEdit
       Left = 96
-      Height = 22
+      Height = 31
       Top = 272
       Width = 80
       Color = clGradientActiveCaption
@@ -35,7 +35,7 @@ object Form1: TForm1
     end
     object Edit2: TEdit
       Left = 392
-      Height = 22
+      Height = 31
       Top = 272
       Width = 80
       Color = clGradientActiveCaption
@@ -43,9 +43,9 @@ object Form1: TForm1
     end
     object Label1: TLabel
       Left = 192
-      Height = 16
+      Height = 15
       Top = 279
-      Width = 58
+      Width = 64
       Caption = 'Spieler 1'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clNavy
@@ -59,9 +59,9 @@ object Form1: TForm1
     end
     object Label2: TLabel
       Left = 488
-      Height = 16
+      Height = 15
       Top = 279
-      Width = 58
+      Width = 64
       Caption = 'Spieler 2'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clNavy
@@ -80,14 +80,14 @@ object Form1: TForm1
       Width = 107
       Caption = 'Spielbeginn'
       Color = clGradientActiveCaption
-      OnClick = Button1Click
+      OnClick = spielBeginnClicked
       TabOrder = 2
     end
     object Label3: TLabel
       Left = 16
-      Height = 16
+      Height = 15
       Top = 336
-      Width = 400
+      Width = 455
       Caption = 'Du beginnst mit 15 Paaren und steigerst dich mit jedem Level'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clNavy
