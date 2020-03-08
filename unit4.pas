@@ -71,13 +71,13 @@ begin
     b := tmp;
 end;
 
-function aufgabeSubtrahien(ergebnis:integer): string;
+function aufgabeSubtrahieren(ergebnis:integer): string;
 var x, y: Real;
 begin
      // y festlegen und x anhand ergebnis ausrechnen
      y := random(10);
      x := ergebnis + y;
-     aufgabeSubtrahien := FloatToStr(x)+'-'+FloatToStr(y)+'='+IntToStr(ergebnis);
+     aufgabeSubtrahieren := FloatToStr(x)+'-'+FloatToStr(y)+'='+IntToStr(ergebnis);
 end;
 
 function aufgabeAddieren(ergebnis:integer): string;
@@ -89,7 +89,7 @@ begin
      aufgabeAddieren := FloatToStr(x)+'+'+FloatToStr(y)+'='+IntToStr(ergebnis);
 end;
 
-function aufgabeMultiplizerien(ergebnis:integer): string;
+function aufgabeMultiplizieren(ergebnis:integer): string;
 var x: Real;
     y: Integer;
 begin
@@ -99,7 +99,7 @@ begin
            x := ergebnis / y;
      until (ergebnis mod y) = 0;
 
-     aufgabeMultiplizerien := FloatToStr(x)+'*'+FloatToStr(y)+'='+IntToStr(ergebnis);
+     aufgabeMultiplizieren := FloatToStr(x)+'*'+FloatToStr(y)+'='+IntToStr(ergebnis);
 end;
 
 function aufgabeDividieren(ergebnis:integer): string;
@@ -116,13 +116,15 @@ var i, arraySize, operation:Integer;
     aufgabe: string;
 begin
      arraySize := Length(ergebnisse);
+     // ergebnisArray druchgehen und für jedes Ergebniss
+     // eine zufällige Aufgabe generieren und in aufgabenArray schreiben
      for i:= 0 to arraySize-1 do
      begin
           operation := random(4);
           case operation of
-               0: aufgabe := aufgabeSubtrahien(ergebnisse[i]);
+               0: aufgabe := aufgabeSubtrahieren(ergebnisse[i]);
                1: aufgabe := aufgabeAddieren(ergebnisse[i]);
-               2: aufgabe := aufgabeMultiplizerien(ergebnisse[i]);
+               2: aufgabe := aufgabeMultiplizieren(ergebnisse[i]);
                3: aufgabe := aufgabeDividieren(ergebnisse[i]);
           end;
           aufgabenArray[i] := aufgabe;
@@ -133,18 +135,18 @@ procedure TForm4.FormCreate(Sender: TObject);
 var i, result, arraySize, x, y:Integer;
 begin
        Randomize;
-       // lege 15 Ergebnisse fest
+       // lege 15 zufällige Ergebnisse fest
        i := 0;
        arraysize := Length(ergebnisArray);
        while i <= arraySize-2 do
        begin
-            result := random(100); // kann zu duplikaten führen :(
+            result := random(100); // kann zu Duplikaten führen :(
             ergebnisArray[i] := result;
             ergebnisArray[i+1] := result;
             i := i+2;
        end;
 
-       // mische liste
+       // mische array: durchgehen und mit zufälligen Index tauschen
        for i:=0 to arraySize-1 do
        begin
             swap(ergebnisArray[i], ergebnisArray[random(arraySize-1)]);
@@ -153,12 +155,12 @@ begin
        // erstelle Aufgaben anhand der vordefinierten Ergebnisse
        aufgabenErstellen(ergebnisArray);
 
-       // Grid füllen
+       // Grid füllen: Mapping ein auf zwei dimensionales Array
        for i:=0 to arraySize-1 do
        begin
-            x:=i mod 3;
-            y:=i mod 10;
-            StringGrid1.Cells[y, x] := aufgabenArray[i];
+            x:=i mod StringGrid1.ColCount;
+            y:=i mod StringGrid1.RowCount;
+            StringGrid1.Cells[x, y] := aufgabenArray[i];
        end;
 end;
 
