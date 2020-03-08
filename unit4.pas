@@ -41,7 +41,8 @@ implementation
 
 {$R *.lfm}
  VAR
-   cardResults:ARRAY [0..29] of integer;
+   ergebnisArray:ARRAY [0..29] of integer;
+   aufgabenArray:ARRAY [0..29] of string;
 { TForm4 }
 
 
@@ -70,35 +71,95 @@ begin
     b := tmp;
 end;
 
-procedure aufgabenErstellen(ergebnisse: Array of Integer);
+function aufgabeSubtrahien(ergebnis:integer): string;
+var x, y: Real;
 begin
+     // y festlegen und x anhand ergebnis ausrechnen
+     y := random(10);
+     x := ergebnis + y;
+     aufgabeSubtrahien := FloatToStr(x)+'-'+FloatToStr(y)+'='+IntToStr(ergebnis);
+end;
 
+function aufgabeAddieren(ergebnis:integer): string;
+var x, y: Real;
+begin
+     // y festlegen und x anhand ergebnis ausrechnen
+     y := random(10);
+     x := ergebnis - y;
+     aufgabeAddieren := FloatToStr(x)+'+'+FloatToStr(y)+'='+IntToStr(ergebnis);
+end;
+
+function aufgabeMultiplizerien(ergebnis:integer): string;
+var x: Real;
+    y: Integer;
+begin
+     // y festlegen und x anhand ergebnis ausrechnen
+     repeat // solang probieren bis keine Gleitkomma Rechnung entsteht
+           y := random(10)+1; // +1 um division mit Null verhindern
+           x := ergebnis / y;
+     until (ergebnis mod y) = 0;
+
+     aufgabeMultiplizerien := FloatToStr(x)+'*'+FloatToStr(y)+'='+IntToStr(ergebnis);
+end;
+
+function aufgabeDividieren(ergebnis:integer): string;
+var x, y: Real;
+begin
+     // y festlegen und x anhand ergebnis ausrechnen
+     y := random(4)+1; // +1 um division mit Null verhindern
+     x := ergebnis * y;
+     aufgabeDividieren := FloatToStr(x)+'/'+FloatToStr(y)+'='+IntToStr(ergebnis);
+end;
+
+procedure aufgabenErstellen(ergebnisse: Array of Integer);
+var i, arraySize, operation:Integer;
+    aufgabe: string;
+begin
+     arraySize := Length(ergebnisse);
+     for i:= 0 to arraySize-1 do
+     begin
+          operation := random(4);
+          case operation of
+               0: aufgabe := aufgabeSubtrahien(ergebnisse[i]);
+               1: aufgabe := aufgabeAddieren(ergebnisse[i]);
+               2: aufgabe := aufgabeMultiplizerien(ergebnisse[i]);
+               3: aufgabe := aufgabeDividieren(ergebnisse[i]);
+          end;
+          aufgabenArray[i] := aufgabe;
+     end;
 end;
 
 procedure TForm4.FormCreate(Sender: TObject);
-var i, result, arraySize:Integer;
+var i, result, arraySize, x, y:Integer;
 begin
        Randomize;
        // lege 15 Ergebnisse fest
        i := 0;
-       arraysize := Length(cardResults);
+       arraysize := Length(ergebnisArray);
        while i <= arraySize-2 do
        begin
             result := random(100); // kann zu duplikaten führen :(
-            WriteLn('idx: ', i, ' = ', result);
-            cardResults[i] := result;
-            cardResults[i+1] := result;
+            ergebnisArray[i] := result;
+            ergebnisArray[i+1] := result;
             i := i+2;
        end;
 
        // mische liste
        for i:=0 to arraySize-1 do
        begin
-            swap(cardResults[i], cardResults[random(arraySize-1)]);
+            swap(ergebnisArray[i], ergebnisArray[random(arraySize-1)]);
        end;
 
-       // erstelle Aufgabe anhand des vordefinierten Ergebnis
+       // erstelle Aufgaben anhand der vordefinierten Ergebnisse
+       aufgabenErstellen(ergebnisArray);
 
+       // Grid füllen
+       for i:=0 to arraySize-1 do
+       begin
+            x:=i mod 3;
+            y:=i mod 10;
+            StringGrid1.Cells[y, x] := aufgabenArray[i];
+       end;
 end;
 
 procedure TForm4.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;

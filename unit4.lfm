@@ -22,9 +22,14 @@ object Form4: TForm4
     ExtendedSelect = False
     FixedCols = 0
     FixedRows = 0
+    Font.Color = clYellow
+    Font.Style = [fsBold]
+    ParentFont = False
     RowCount = 3
     ScrollBars = ssNone
     TabOrder = 0
+    TitleFont.Color = clYellow
+    TitleFont.Style = [fsBold]
     OnDrawCell = StringGrid1DrawCell
     OnMouseDown = StringGrid1MouseDown
     OnSelectCell = cardSelected
