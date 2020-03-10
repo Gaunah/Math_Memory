@@ -75,14 +75,6 @@ procedure TForm4.cardSelected(Sender: TObject; aCol, aRow: Integer;
   var CanSelect: Boolean);
   var idx: integer;
 begin
-       wieVieleOffen:= wieVieleOffen + 1;
-       idx := StringGrid1.ColCount * aRow + aCol;
-       WriteLn('result:', ergebnisArray[idx]);
-       StringGrid1.Cells[aCol, aRow] := '     ' + aufgabenArray[idx];
-
-       if(wieVieleOffen > 2)
-       then
-           kartenLeeren();
 
 end;
 
@@ -190,11 +182,21 @@ end;
 
 procedure TForm4.StringGrid1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
-Var Col,Row:integer;
+Var col,row, idx:integer;
 begin
       Stringgrid1.MouseToCell(x,y,col,row);
-      Edit2.Text:=InttoStr(Col);
+      Edit2.Text:=InttoStr(col);
       Edit3.Text:=InttoStr(row);
+
+      wieVieleOffen:= wieVieleOffen + 1;
+      idx := StringGrid1.ColCount * row + col;
+      WriteLn('result:', ergebnisArray[idx]);
+      StringGrid1.Cells[col, row] := '     ' + aufgabenArray[idx];
+
+      if(wieVieleOffen > 2)
+      then
+          kartenLeeren();
+
 end;
 
 end.
