@@ -68,7 +68,6 @@ begin
                  StringGrid1.Cells[x, y] := '';
             end;
        end;
-       wieVieleOffen:= 0;
 end;
 
 procedure TForm4.cardSelected(Sender: TObject; aCol, aRow: Integer;
@@ -189,13 +188,18 @@ begin
       Edit3.Text:=InttoStr(row);
 
       wieVieleOffen:= wieVieleOffen + 1;
-      idx := StringGrid1.ColCount * row + col;
-      WriteLn('result:', ergebnisArray[idx]);
-      StringGrid1.Cells[col, row] := '     ' + aufgabenArray[idx];
-
-      if(wieVieleOffen > 2)
-      then
+      if(wieVieleOffen > 2) then
+          begin
           kartenLeeren();
+          wieVieleOffen:=0;
+          WriteLn('---------');
+          end
+      else
+          begin
+          idx := StringGrid1.ColCount * row + col;
+          WriteLn('result: ', ergebnisArray[idx]);
+          StringGrid1.Cells[col, row] := '     ' + aufgabenArray[idx];
+          end;
 
 end;
 
