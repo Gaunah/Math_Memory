@@ -98,7 +98,7 @@ end;
 function aufgabeSubtrahieren(ergebnis:integer): string;
 var x, y: Real;
 begin
-     // y festlegen und x anhand ergebnis ausrechnen
+    {y festlegen und x anhand ergebnis ausrechnen}
      y := random(10);
      x := ergebnis + y;
      aufgabeSubtrahieren := FloatToStr(x)+'-'+FloatToStr(y);
@@ -107,7 +107,7 @@ end;
 function aufgabeAddieren(ergebnis:integer): string;
 var x, y: Real;
 begin
-     // y festlegen und x anhand ergebnis ausrechnen
+    {y festlegen und x anhand ergebnis ausrechnen}
      y := random(10);
      x := ergebnis - y;
      aufgabeAddieren := FloatToStr(x)+'+'+FloatToStr(y);
@@ -117,9 +117,9 @@ function aufgabeMultiplizieren(ergebnis:integer): string;
 var x: Real;
     y: Integer;
 begin
-     // y festlegen und x anhand ergebnis ausrechnen
-     repeat // solang probieren bis keine Gleitkomma Rechnung entsteht
-           y := random(10)+1; // +1 um division mit Null verhindern
+    {y festlegen und x anhand ergebnis ausrechnen}
+     repeat {solang probieren bis keine Gleitkomma Rechnung entsteht}
+           y := random(10)+1; {+1 um division mit Null verhindern}
            x := ergebnis / y;
      until (ergebnis mod y) = 0;
 
@@ -129,8 +129,8 @@ end;
 function aufgabeDividieren(ergebnis:integer): string;
 var x, y: Real;
 begin
-     // y festlegen und x anhand ergebnis ausrechnen
-     y := random(4)+1; // +1 um division mit Null verhindern
+    {y festlegen und x anhand ergebnis ausrechnen}
+     y := random(4)+1; {+1 um division mit Null verhindern}
      x := ergebnis * y;
      aufgabeDividieren := FloatToStr(x)+'/'+FloatToStr(y);
 end;
@@ -140,8 +140,8 @@ var i, arraySize, operation:Integer;
     aufgabe: string;
 begin
      arraySize := Length(ergebnisse);
-     // ergebnisArray druchgehen und für jedes Ergebniss
-     // eine zufällige Aufgabe generieren und in aufgabenArray schreiben
+     {ergebnisArray druchgehen und für jedes Ergebniss
+     eine zufällige Aufgabe generieren und in aufgabenArray schreiben}
      for i:= 0 to arraySize-1 do
      begin
           operation := random(4);
@@ -156,27 +156,27 @@ begin
 end;
 
 procedure TForm4.FormCreate(Sender: TObject);
-var i, result, arraySize, x, y:Integer;
+var i, res, arraySize, x, y:Integer;
 begin
        Randomize;
-       // lege 15 zufällige Ergebnisse fest
+       {lege 15 zufällige Ergebnisse fest}
        i := 0;
        arraysize := Length(ergebnisArray);
        while i <= arraySize-2 do
        begin
-            result := random(100); // kann zu Duplikaten führen :(
-            ergebnisArray[i] := result;
-            ergebnisArray[i+1] := result;
+            res := random(100); {kann zu Duplikaten führen :( }
+            ergebnisArray[i] := res;
+            ergebnisArray[i+1] := res;
             i := i+2;
        end;
 
-       // mische array: durchgehen und mit zufälligen Index tauschen
+       {mische array: durchgehen und mit zufälligen Index tauschen}
        for i:=0 to arraySize-1 do
        begin
             swap(ergebnisArray[i], ergebnisArray[random(arraySize-1)]);
        end;
 
-       // erstelle Aufgaben anhand der vordefinierten Ergebnisse
+       {erstelle Aufgaben anhand der vordefinierten Ergebnisse}
        aufgabenErstellen(ergebnisArray);
 
        kartenLeeren();
