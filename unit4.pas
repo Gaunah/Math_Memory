@@ -19,8 +19,6 @@ type
     Label1: TLabel;
     Label2: TLabel;
     StringGrid1: TStringGrid;
-    procedure cardSelected(Sender: TObject; aCol, aRow: Integer;
-      var CanSelect: Boolean);
     procedure level1Clicked(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -29,6 +27,7 @@ type
     procedure StringGrid1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure kartenLeeren();
+    procedure zugAuswerten(ergebnis: Integer);
   private
 
   public
@@ -44,7 +43,7 @@ implementation
  VAR
    ergebnisArray:ARRAY [0..29] of integer;
    aufgabenArray:ARRAY [0..29] of string;
-   wieVieleOffen: Integer;
+   wieVieleOffen, letzteErgebnis, spielStand: Integer;
 { TForm4 }
 
 
@@ -68,13 +67,6 @@ begin
                  StringGrid1.Cells[x, y] := '';
             end;
        end;
-end;
-
-procedure TForm4.cardSelected(Sender: TObject; aCol, aRow: Integer;
-  var CanSelect: Boolean);
-  var idx: integer;
-begin
-
 end;
 
 procedure swap(var a,b : integer);
@@ -170,13 +162,25 @@ begin
        {erstelle Aufgaben anhand der vordefinierten Ergebnisse}
        aufgabenErstellen(ergebnisArray);
 
-       kartenLeeren();
+       {init}
+       letzteErgebnis:= 999999;
+       spielStand:= 0;
 end;
 
 procedure TForm4.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 begin
 
+end;
+
+procedure TForm4.zugAuswerten(ergebnis: Integer);
+begin
+     if(ergebnis = letzteErgebnis) then
+         begin
+              WriteLn('BINGO!');
+              spielStand:= spielStand + 1;
+              Edit1.Text:=IntToStr(spielStand);
+         end;
 end;
 
 procedure TForm4.StringGrid1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -187,18 +191,24 @@ begin
       Edit2.Text:=InttoStr(col);
       Edit3.Text:=InttoStr(row);
 
+
       wieVieleOffen:= wieVieleOffen + 1;
       if(wieVieleOffen > 2) then
           begin
+          {Spielfeld bereinigen}
           kartenLeeren();
           wieVieleOffen:=0;
           WriteLn('---------');
+          letzteErgebnis:= 999999; {letzteErgebnis ungültig machen}
           end
       else
           begin
+          {Karte aufdecken, Zug auswerten, Ergebnismerken}
           idx := StringGrid1.ColCount * row + col;
-          WriteLn('result: ', ergebnisArray[idx]);
           StringGrid1.Cells[col, row] := '     ' + aufgabenArray[idx];
+          WriteLn('result: ', ergebnisArray[idx]);
+          zugAuswerten(ergebnisArray[idx]);
+          letzteErgebnis:= ergebnisArray[idx];
           end;
 
 end;

@@ -33,7 +33,6 @@ object Form4: TForm4
     TitleFont.Style = [fsBold]
     OnDrawCell = StringGrid1DrawCell
     OnMouseDown = StringGrid1MouseDown
-    OnSelectCell = cardSelected
   end
   object Label1: TLabel
     Left = 261
@@ -56,8 +55,10 @@ object Form4: TForm4
     Height = 35
     Top = 400
     Width = 80
-    Color = clSkyBlue
+    Enabled = False
+    ParentFont = False
     TabOrder = 1
+    Text = '0'
   end
   object Label2: TLabel
     Left = 408
