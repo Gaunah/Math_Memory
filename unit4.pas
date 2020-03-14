@@ -27,7 +27,6 @@ type
     procedure StringGrid1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure kartenLeeren();
-    procedure zugAuswerten(ergebnis: Integer);
   private
 
   public
@@ -43,7 +42,7 @@ implementation
  VAR
    ergebnisArray:ARRAY [0..29] of integer;
    aufgabenArray:ARRAY [0..29] of string;
-   wieVieleOffen, letzteErgebnis, spielStand: Integer;
+   wieVieleOffen, letzteErgebnis, spielStand, letzterIdx: Integer;
 { TForm4 }
 
 
@@ -165,22 +164,25 @@ begin
        {init}
        letzteErgebnis:= 999999;
        spielStand:= 0;
+       letzterIdx:= -1;
 end;
 
 procedure TForm4.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
+var
+    idx: Integer;
 begin
+     idx := StringGrid1.ColCount * aRow + aCol;
 
-end;
-
-procedure TForm4.zugAuswerten(ergebnis: Integer);
-begin
-     if(ergebnis = letzteErgebnis) then
-         begin
-              WriteLn('BINGO!');
-              spielStand:= spielStand + 1;
-              Edit1.Text:=IntToStr(spielStand);
-         end;
+     {nur gelb ausfüllen wenn aufgabenArray an dieser Stelle leer ist}
+     if aufgabenArray[idx] = '' then
+     begin
+       with StringGrid1.Canvas do
+       begin
+            Brush.Color := clyellow;
+            FillRect(aRect);
+       end;
+     end;
 end;
 
 procedure TForm4.StringGrid1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -190,7 +192,14 @@ begin
       Stringgrid1.MouseToCell(x,y,col,row);
       Edit2.Text:=InttoStr(col);
       Edit3.Text:=InttoStr(row);
+      idx := StringGrid1.ColCount * row + col;
 
+      if letzterIdx = idx then
+         begin
+           {nichts machen wenn letzte Karte erneut geklickt wurde}
+           letzterIdx := -1;
+           Exit;
+         end;
 
       wieVieleOffen:= wieVieleOffen + 1;
       if(wieVieleOffen > 2) then
@@ -203,11 +212,23 @@ begin
           end
       else
           begin
+
+
           {Karte aufdecken, Zug auswerten, Ergebnismerken}
-          idx := StringGrid1.ColCount * row + col;
           StringGrid1.Cells[col, row] := '     ' + aufgabenArray[idx];
           WriteLn('result: ', ergebnisArray[idx]);
-          zugAuswerten(ergebnisArray[idx]);
+
+          if(ergebnisArray[idx] = letzteErgebnis) then {wenn richtige Karte}
+          begin
+              spielStand:= spielStand + 1;
+              Edit1.Text:=IntToStr(spielStand);
+
+              {Diese und letze Aufgabe aus dem Array löschen}
+              aufgabenArray[idx] := '';
+              aufgabenArray[letzterIdx] := '';
+          end;
+
+          letzterIdx := idx;
           letzteErgebnis:= ergebnisArray[idx];
           end;
 
